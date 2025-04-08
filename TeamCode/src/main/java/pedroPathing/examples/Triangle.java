@@ -29,7 +29,7 @@ import pedroPathing.constants.LConstants;
 public class Triangle extends OpMode {
     private Follower follower;
 
-    private final Pose startPose = new Pose(0,0, Math.toRadians(0));
+    private final Pose startPose = new Pose(0, 0, Math.toRadians(0));
     private final Pose interPose = new Pose(24, -24, Math.toRadians(90));
     private final Pose endPose = new Pose(24, 24, Math.toRadians(45));
 
