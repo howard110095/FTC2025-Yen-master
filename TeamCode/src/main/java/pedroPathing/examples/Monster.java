@@ -78,9 +78,6 @@ public class Monster extends OpMode {
         telemetry.update();
     }
 
-    /**
-     * We do not use this because everything automatically should disable
-     **/
     @Override
     public void stop() {
     }

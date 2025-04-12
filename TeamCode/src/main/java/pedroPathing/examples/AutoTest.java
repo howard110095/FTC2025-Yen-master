@@ -193,7 +193,6 @@ public class AutoTest extends OpMode {
         follower.update();
         autonomousPathUpdate();
 
-
         // Feedback to Driver Hub
         telemetry.addData("path state", pathState);
         telemetry.addData("x", follower.getPose().getX());
