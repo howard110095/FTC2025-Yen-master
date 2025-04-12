@@ -48,56 +48,43 @@ public abstract class basic extends OpMode {
 
     //-------------arm--------
     public static double armTarget = 49; //手臂目標角度
-    public static double armP_hang = 2/*hang robot*/, armP = 0.04, armI = 0.04, armD = 0.002, armF = 0.04; //手臂 PID 參數  0.04~0.175
-    public static double arm_f_coeff = 0.0053; // 前饋係數
-    public static double arm_ff = 0.0053; // 前饋係數
-    public static double arm_f_hang = -0.3; //吊掛
-    public static double armPosNow; //now degree
-    public static double armUpLimit = 98, armBottomLimit = -47; // 手臂限制
-    public static double armPowerMax = 1, armPowerMin = -0.6; // 手臂電力
-    public static double arm2deg = 6.27; // 角度換算常數
+    public static double armP = 0.04, armI = 0.04, armD = 0.002, armF = 0.04; //手臂 PID 參數  0.04~0.175
+    public static double armPosNow, armOutput; //now degree
+    public static double armUpLimit = 118, armBottomLimit = -47, armPowerMax = 1, armPowerMin = -0.6;
     public static double armEnc2deg = 751.8 * 4.2 / 360;  //編碼器值換算角度
-    public static double armStartAngle = 49; // 起始角度
-    public static double armOffset = -47; // 偏移量
-    public static double armOutput;
+    public static double armOffset = -33; // 起始角度   偏移量
 
     //---------------- slide -------------
     public static double slideP = 0.8, slideI = 0, slideD = 0.018, slideF = 0; // 吊掛滑軌前饋
-    public static double slideFF = 0, slideF_hang = -0.3; // 滑軌前饋
-    public static double slide_f_coeff = 0; // 滑軌前饋係數
+    public static double slideOffset = 0; // 滑軌前饋係數
     public static double slide_motorEnc = 145.1; // 滑軌馬達編碼器常數
     public static double slide_Ratio = 1 / 1.5; // 傳動比
     public static double slide2length = slide_motorEnc * slide_Ratio / 0.8; // 編碼器值轉長度
     public double slidePower;
-    public static double smax = 81, smin = 28; // slide length limit
+    public static double smax = 84.5, smin = 28; // slide length limit
     public static double slidePosNow = 0; //slide current CM
     public double slideTarget = 0; //slide Target CM
 
-    //-----------------intake-----------------
-    public static double clawCloseTime = 0.2, putBucketTime = 0.3, claw_bigger = 0.5, claw_Open = 0.64, claw_Close = 0.64, intake_on = 1, intake_off = 0;
-    public static double wrist_pos = 0, wrist_all_pose = 0.91, wrist_delta = 0.05, wrist_position = 0;
-    public static double wrist_init = 0.15, delta_init = 0.2, wrist_ready = 0.78, wrist_down = 0.74, wrist_bucket = 0.43, wrist_wall = 0.485, wrist_hang = 0.38;
-    public static double arm_init = -47, arm_robot = 70, arm_ready = 0, arm_catch = -24, arm_bucket = 86, arm_wall = 0;
-    public static double arm_hang = 35;
-    public static double slide_ready = 33, slide_detect = 10, slide_bucket = 80.5, slide_wall = 30, slide_hang = 45;
-    public static double slide_robot = 80, slide2floor = 54, slide2floor_down = 57, slide3floor = 28;
+    //-----------------position-----------------
+    public static double clawCloseTime = 0.2, putBucketTime = 0.3, claw_bigger = 0.52, claw_Close = 0.63, intake_on = 1, intake_off = 0;
+    public static double wrist_pos = 0, wrist_all_pose = 0.91, wrist_delta = 0.06, wrist_position = 0;
+    public static double wrist_init = 0.15, delta_init = 0.2, wrist_ready = 0.78, wrist_down = 0.74, wrist_bucket = 0.35, wrist_wall = 0.45, wrist_hang = 0.38;
+    public static double arm_init = -33, arm_robot = 70, arm_ready = 0, arm_catch = -24, arm_bucket = 88, arm_wall = 0, arm_hang = 38;
+    public static double slide_ready = 33, slide_bucket = 83.5, slide_wall = 30, slide_hang = 45;
+    public static double slide_robot = 81, slide2floor = 54, slide2floor_down = 59, slide3floor = 28;
+    public static double slideBackHang = 34.4, armBackHang = 115, wristBackHang = 0.49, deltaBackHang = 0.25;
     public boolean isHangingMode = false; //hang mode
 
     //---------teleOp---------------
-    public static double slide_Speed = 10; // 滑軌速度
-    public static double arm_Speed = 5; // 手臂速度
     public boolean Button1A = false, Button1B = false, Button1X = false, Button1Y = false;
     public boolean Button1LB = false, Button1RB = false, Button1DL = false, Button1DR = false;
     public boolean Button1LSB = false, Button1RSB = false;
-    public boolean Button2A = false, Button2B = false, Button2X = false, Button2Y = false;
     public int yellow_count = 0, specimen_count = 0, hang_count = 0, hang_robot_count = 0, intakeout_count = 0, NowMode = 1;
-    static public int yellow_step = 6, hang_step = 4;
-
-    //
-    public double x_target = 0, y_target = 0, heading_target = 0;
+    static public int yellow_step = 5, hang_step = 5, specimen_step = 8;
 
     // auto floor
     public boolean downCatch = false, isReset = false;
+    public int OutColor = 1; // 1->red 3->blue
 
     Gamepad.RumbleEffect effect = new Gamepad.RumbleEffect.Builder()
             .addStep(1.0, 1.0, 1000) // 右馬達全速震動 1000 毫秒
@@ -120,6 +107,7 @@ public abstract class basic extends OpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         //motor
+        CS = hardwareMap.get(ColorSensor.class,"cs");
         SlideFront = hardwareMap.get(DcMotorEx.class, "sf");
         SlideBack = hardwareMap.get(DcMotorEx.class, "sb");
         ArmUp = hardwareMap.get(DcMotorEx.class, "au");
@@ -134,6 +122,8 @@ public abstract class basic extends OpMode {
         Lwrist = hardwareMap.get(Servo.class, "lw");
         Rwrist = hardwareMap.get(Servo.class, "rw");
         Right.setDirection(CRServo.Direction.REVERSE);
+
+        robotInit(); // 執行自定義初始化邏輯
 
         //ENCODER
         if (!isReset) {
@@ -151,8 +141,6 @@ public abstract class basic extends OpMode {
         ArmUp.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         ArmDown.setPower(0);
         ArmDown.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        robotInit(); // 執行自定義初始化邏輯
         telemetry.addData("init", "done");
         telemetry.update();
     }
@@ -190,10 +178,11 @@ public abstract class basic extends OpMode {
 
     // 手臂轉動到指定角度
     public void armTurn2angle(double target) {
-        armPosNow = ArmUp.getCurrentPosition() / armEnc2deg + armOffset; // 計算當前角度 ///*******
+        armPosNow = ArmUp.getCurrentPosition() / armEnc2deg + armOffset; // 計算當前角度
         if (slidePosNow >= 50 && target <= 15 && armPosNow > 15) target = armPosNow;
         target = clamp(target, armBottomLimit, armUpLimit); // 限制目標角度範圍
-        armF = (slidePosNow - smin) / (smax - smin) * 0.15 + 0.045;//     1/*slidePosNow*/ * 1/*arm_f_coeff*/; // 計算前饋
+        //28 -> 0 ; 80 -> 0.16
+        armF = (slidePosNow - smin) / (smax - smin) * 0.16 + 0;// 計算前饋
         ArmPID.setPID(armP, armI, armD); // 設置 PID
         ArmPID.setTolerance(10); // 設置誤差容忍度
         armOutput = ArmPID.calculate(armPosNow, target) + armF * Math.cos(Math.toRadians(armPosNow))/* */; // 計算輸出
@@ -214,7 +203,7 @@ public abstract class basic extends OpMode {
 
     // 滑軌移動到指定位置
     public void slideToPosition(double slidePos) {
-        slidePosNow = (SlideBack.getCurrentPosition() / slide2length) * 2 + smin; // 計算當前位置
+        slidePosNow = (SlideBack.getCurrentPosition() / slide2length) * 2 + smin + slideOffset; // 計算當前位置
         slidePos = clamp(slidePos, smin, smax); // 限制目標範圍
         SlidePID.setPID(slideP, slideI, slideD); // 設置 PID
         slidePower = SlidePID.calculate(slidePosNow, slidePos) + Math.sin(Math.toRadians(slidePosNow)) * slideF; // 計算輸出
@@ -223,7 +212,7 @@ public abstract class basic extends OpMode {
     }
 
     public void slideOn(double slidePos) {
-        slidePosNow = (SlideBack.getCurrentPosition() / slide2length) * 2 + smin; // 計算當前位置
+        slidePosNow = (SlideBack.getCurrentPosition() / slide2length) * 2 + smin + slideOffset; // 計算當前位置
         slidePos = clamp(slidePos, smin, smax); // 限制目標範圍
         SlidePID.setPID(slideP, slideI, slideD); // 設置 PID
         if (slidePos - slidePosNow >= 1) slidePower = 1;
@@ -246,12 +235,12 @@ public abstract class basic extends OpMode {
 
     public void autoFloor() {
         //255 -> 355
-        slidePosNow = (SlideBack.getCurrentPosition() / slide2length) * 2 + smin;
-        armTarget = -Math.toDegrees(Math.asin(22 / slidePosNow));
-        wrist_pos = -Math.toDegrees(Math.asin(22 / slidePosNow)) / 250 / 355 * 255;
+        slidePosNow = (SlideBack.getCurrentPosition() / slide2length) * 2 + smin + slideOffset;
+        armTarget = -Math.toDegrees(Math.asin(15 / slidePosNow));
+        wrist_pos = -Math.toDegrees(Math.asin(15 / slidePosNow)) / 250 / 355 * 255;
         wrist_pos += 0.5;
         wristCombo(wrist_pos, 0);
-        clawCombo(claw_bigger, intake_on);
+        clawCombo(claw_Close, intake_on);
     }
 
     // 計算角度誤差
@@ -276,21 +265,21 @@ public abstract class basic extends OpMode {
 //    }
 
     public double Rpercent() {
-        return (double) CS.red() / (CS.red() + CS.green() + CS.blue());      //  CS.green();
+        return (double) CS.red() / (CS.red() + CS.green() + CS.blue());
     }
 
     public double Gpercent() {
-        return (double) CS.green() / (CS.red() + CS.green() + CS.blue());      //  CS.green();
+        return (double) CS.green() / (CS.red() + CS.green() + CS.blue());
     }
 
     public double Bpercent() {
-        return (double) CS.blue() / (CS.red() + CS.green() + CS.blue());      //  CS.green();
+        return (double) CS.blue() / (CS.red() + CS.green() + CS.blue());
     }
 
     public int color_detect() {
-        if (Rpercent() > 0.35) return 1;  //red
-        else if (Bpercent() > 0.35) return 3; //blue
-        else if (Gpercent() > 0.35) return 2; //yellow
+        if (Rpercent() < 0.45 && Bpercent() < 0.2) return 2; //yellow
+        else if (Rpercent() > 0.35) return 1; //red
+        else if (Bpercent() > 0.42) return 3; //blue
         else return 0;
     }
 }

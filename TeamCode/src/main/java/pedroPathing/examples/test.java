@@ -20,11 +20,7 @@ import pedroPathing.constants.LConstants;
 @Config
 @TeleOp(name = "test", group = "Linear OpMode")
 public class test extends basic {
-    public static double for1 = 0.5, for2 = 0, for_testing_3 = 0;   //0.53 0.94
-    public boolean catching = false;
-    boolean togglePressed = false, cirPressd = false; // 防抖動變數
-
-    double possss = 0;
+    public static double armT = 0.5, for2 = 0, for_testing_3 = 0;
 
     @Override
     public void robotInit() {
@@ -33,7 +29,7 @@ public class test extends basic {
 
     @Override
     protected void robotInitLoop() {
-        //armTurn2angle(0);
+//        armTurn2angle(0);
 //        slideToPosition(slide_hang);
 //        armTurn2angle(arm_hang);
 //        wristCombo(wrist_hang, 0);
@@ -41,16 +37,21 @@ public class test extends basic {
 
     @Override
     public void robotStart() {
-        //follower.startTeleopDrive();
+//        follower.startTeleopDrive();
     }
 
     @Override
     public void robotLoop() {
-        armTurn2angle(for1);
+//        armOffset = 0;
+//        armTurn2angle(armT);
+//        Lwrist.setPosition(for1);
+//        Rwrist.setPosition(for2);
+
+wristCombo(wristBackHang,deltaBackHang);
 
         // 顯示數據
-        telemetry.addData("target", for1);
         telemetry.addData("NowDegree", armPosNow);
+        telemetry.addData("target", armT);
         telemetry.update();
     }
 

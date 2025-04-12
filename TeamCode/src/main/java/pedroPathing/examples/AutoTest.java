@@ -217,18 +217,12 @@ public class AutoTest extends OpMode {
         buildPaths();
     }
 
-    /**
-     * This method is called continuously after Init while waiting for "play".
-     **/
+
     @Override
     public void init_loop() {
-
     }
 
-    /**
-     * This method is called once at the start of the OpMode.
-     * It runs all the setup actions, including building paths and starting the path system
-     **/
+
     @Override
     public void start() {
         opmodeTimer.resetTimer();

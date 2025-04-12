@@ -1,10 +1,7 @@
 package pedroPathing.examples;
 
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
@@ -16,7 +13,6 @@ public class ColorSensorTest extends OpMode {
 
     @Override
     public void loop() {
-
         telemetry.addData("R", Rpercent());
         telemetry.addData("G", Gpercent());
         telemetry.addData("B", Bpercent());
@@ -45,6 +41,8 @@ public class ColorSensorTest extends OpMode {
 
     public int color_detect() {
         if (Rpercent() < 0.45 && Bpercent() < 0.2) return 2; //yellow
+        else if (Rpercent() > 0.35) return 1; //red
+        else if (Bpercent() > 0.42) return 3; //blue
         else return 0;
     }
 }

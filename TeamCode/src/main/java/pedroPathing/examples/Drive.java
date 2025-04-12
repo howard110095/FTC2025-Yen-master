@@ -44,7 +44,7 @@ public class Drive extends basic {
         double axial = -gamepad1.left_stick_y;
         double lateral = -gamepad1.left_stick_x;
         double yaw = gamepad1.right_stick_x * 0.9;
-        follower.setTeleOpMovementVectors(axial * 0.25, lateral * 0.25, -yaw * 0.25, true);
+        follower.setTeleOpMovementVectors(axial * 0.5, lateral * 0.5, -yaw * 0.5, true);
         follower.update();
 
         // 顯示數據
