@@ -10,7 +10,7 @@ public class SlideMoving extends basic {
 
     @Override
     public void robotInit() {
-
+        isReset = true;
     }
 
     @Override
@@ -35,7 +35,8 @@ public class SlideMoving extends basic {
         telemetry.update();
     }
 
-    public void robotStop(){}
+    public void robotStop() {
+    }
 }
 
 

@@ -10,7 +10,7 @@ public class ServoMoving extends basic {
 
     @Override
     public void robotInit() {
-
+        isReset = true;
     }
 
     @Override
