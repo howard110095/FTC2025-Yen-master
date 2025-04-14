@@ -42,7 +42,7 @@ public class test extends basic {
 
     @Override
     public void robotLoop() {
-//        armOffset = 0;
+        armOffset = 0;
 //        armTurn2angle(armT);
 
         wristCombo(for1,for2);
