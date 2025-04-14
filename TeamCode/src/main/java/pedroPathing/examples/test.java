@@ -20,7 +20,7 @@ import pedroPathing.constants.LConstants;
 @Config
 @TeleOp(name = "test", group = "Linear OpMode")
 public class test extends basic {
-    public static double armT = 0.5, for2 = 0, for_testing_3 = 0;
+    public static double armT = 0.5, for1 = 0.35, for2 = 0;
 
     @Override
     public void robotInit() {
@@ -44,10 +44,8 @@ public class test extends basic {
     public void robotLoop() {
 //        armOffset = 0;
 //        armTurn2angle(armT);
-//        Lwrist.setPosition(for1);
-//        Rwrist.setPosition(for2);
 
-wristCombo(wristBackHang,deltaBackHang);
+        wristCombo(for1,for2);
 
         // 顯示數據
         telemetry.addData("NowDegree", armPosNow);

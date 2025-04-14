@@ -52,7 +52,7 @@ public abstract class basic extends OpMode {
     public static double armPosNow, armOutput; //now degree
     public static double armUpLimit = 118, armBottomLimit = -47, armPowerMax = 1, armPowerMin = -0.6;
     public static double armEnc2deg = 751.8 * 4.2 / 360;  //編碼器值換算角度
-    public static double armOffset = -33; // 起始角度   偏移量
+    public static double armOffset = -42; // 起始角度   偏移量
 
     //---------------- slide -------------
     public static double slideP = 0.8, slideI = 0, slideD = 0.018, slideF = 0; // 吊掛滑軌前饋
@@ -66,21 +66,21 @@ public abstract class basic extends OpMode {
     public double slideTarget = 0; //slide Target CM
 
     //-----------------position-----------------
-    public static double clawCloseTime = 0.2, putBucketTime = 0.3, claw_bigger = 0.52, claw_Close = 0.63, intake_on = 1, intake_off = 0;
-    public static double wrist_pos = 0, wrist_all_pose = 0.91, wrist_delta = 0.06, wrist_position = 0;
-    public static double wrist_init = 0.15, delta_init = 0.2, wrist_ready = 0.78, wrist_down = 0.74, wrist_bucket = 0.35, wrist_wall = 0.45, wrist_hang = 0.38;
-    public static double arm_init = -33, arm_robot = 70, arm_ready = 0, arm_catch = -24, arm_bucket = 88, arm_wall = 0, arm_hang = 38;
+    public static double clawCloseTime = 0.2, putBucketTime = 0.3, claw_bigger = 0.52, claw_Close = 0.63,clawWallClose = 0.68, intake_on = 1, intake_off = 0;
+    public static double wrist_pos = 0, wrist_all_pose = 0.75, wrist_delta = 0.06, wrist_position = 0;
+    public static double wrist_init = 0, delta_init = 0.2, wrist_ready = 0.64, wrist_down = 0.6, wrist_bucket = 0.2, wrist_wall = 0.3, wrist_hang = 0.23;
+    public static double arm_init = -42, arm_robot = 70, arm_ready = 0, arm_catch = -24, arm_bucket = 88, arm_wall = 0, arm_hang = 38;
     public static double slide_ready = 33, slide_bucket = 83.5, slide_wall = 30, slide_hang = 45;
-    public static double slide_robot = 81, slide2floor = 54, slide2floor_down = 59, slide3floor = 28;
-    public static double slideBackHang = 34.4, armBackHang = 115, wristBackHang = 0.49, deltaBackHang = 0.25;
+    public static double slide_robot = 81, slide2floor = 49, slide2floor_down = 55, slide3floor = 28;
+    public static double slideBackHang = 34, armBackHang = 117, wristBackHang = 0.4, deltaBackHang = 0.2;
     public boolean isHangingMode = false; //hang mode
 
     //---------teleOp---------------
     public boolean Button1A = false, Button1B = false, Button1X = false, Button1Y = false;
     public boolean Button1LB = false, Button1RB = false, Button1DL = false, Button1DR = false;
     public boolean Button1LSB = false, Button1RSB = false;
-    public int yellow_count = 0, specimen_count = 0, hang_count = 0, hang_robot_count = 0, intakeout_count = 0, NowMode = 1;
-    static public int yellow_step = 5, hang_step = 5, specimen_step = 8;
+    public int yellow_count = 0, hang_count = 0, hang_robot_count = 0, intakeout_count = 0, NowMode = 1;
+    static public int yellow_step = 5, hang_step = 5;
 
     // auto floor
     public boolean downCatch = false, isReset = false;
@@ -107,7 +107,7 @@ public abstract class basic extends OpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         //motor
-        CS = hardwareMap.get(ColorSensor.class,"cs");
+        CS = hardwareMap.get(ColorSensor.class, "cs");
         SlideFront = hardwareMap.get(DcMotorEx.class, "sf");
         SlideBack = hardwareMap.get(DcMotorEx.class, "sb");
         ArmUp = hardwareMap.get(DcMotorEx.class, "au");
@@ -192,7 +192,7 @@ public abstract class basic extends OpMode {
     }
 
     public void armOn(double target) {
-        armPosNow = ArmUp.getCurrentPosition() / armEnc2deg + armOffset; // 計算當前角度 ///*******
+        armPosNow = ArmUp.getCurrentPosition() / armEnc2deg + armOffset; // 計算當前角度
         target = clamp(target, armBottomLimit, armUpLimit); // 限制目標角度範圍
         if (target - armPosNow >= 1) armOutput = 1;
         else if (Math.abs(target - armPosNow) < 1) armOutput = target - armPosNow;
@@ -238,9 +238,10 @@ public abstract class basic extends OpMode {
         slidePosNow = (SlideBack.getCurrentPosition() / slide2length) * 2 + smin + slideOffset;
         armTarget = -Math.toDegrees(Math.asin(15 / slidePosNow));
         wrist_pos = -Math.toDegrees(Math.asin(15 / slidePosNow)) / 250 / 355 * 255;
-        wrist_pos += 0.5;
+        wrist_pos += 0.35;
         wristCombo(wrist_pos, 0);
-        clawCombo(claw_Close, intake_on);
+        if(gamepad1.left_bumper) clawCombo(claw_Close, -intake_on);
+        else  clawCombo(claw_Close, intake_on);
     }
 
     // 計算角度誤差

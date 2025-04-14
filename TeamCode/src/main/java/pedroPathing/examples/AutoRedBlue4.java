@@ -26,7 +26,7 @@ public class AutoRedBlue4 extends basic {
 
     private final Pose startPose = new Pose(6.5, 64, Math.toRadians(0));
     private final Pose hang1Control = new Pose(50, 62, Math.toRadians(0));
-    private final Pose hang1Pose = new Pose(40, 64, Math.toRadians(0));
+    private final Pose hang1Pose = new Pose(37.5, 64, Math.toRadians(0));
     private final Pose leave1Control = new Pose(24, 50, Math.toRadians(0));
     private final Pose leave1Pose = new Pose(40, 36, Math.toRadians(0));
     private final Pose readypushControl = new Pose(60, 36, Math.toRadians(0));
@@ -35,20 +35,20 @@ public class AutoRedBlue4 extends basic {
     // private final Pose push1Control = new Pose(90, 25, Math.toRadians(0));
     private final Pose push1stop = new Pose(17, 24, Math.toRadians(270));
     private final Pose ready2Control = new Pose(60, 29, Math.toRadians(270));
-    private final Pose ready2Pose = new Pose(60, 15, Math.toRadians(180));
-    private final Pose get1Pose = new Pose(16, 17.5, Math.toRadians(180));
-    //    private final Pose readyHang2Pose = new Pose(20, 68, Math.toRadians(0));
-    private final Pose hang2Pose = new Pose(40, 81.7, Math.toRadians(0));
-    //    private final Pose readyget2Pose = new Pose(20, 68, Math.toRadians(310));
-    private final Pose get2Pose = new Pose(16, 19, Math.toRadians(180));
-    //    private final Pose readyHang3Pose = new Pose(20, 72, Math.toRadians(0));
-    private final Pose hang3Pose = new Pose(40, 81, Math.toRadians(0));
+    private final Pose ready2Pose = new Pose(60, 14, Math.toRadians(180));
+    private final Pose get1Pose = new Pose(17, 15, Math.toRadians(180));
+    private final Pose readyHang2Pose = new Pose(17, 66, Math.toRadians(180));
+    private final Pose hang2Pose = new Pose(40.8, 66, Math.toRadians(180));
+    //        private final Pose readyget2Pose = new Pose(17, 76, Math.toRadians(310));
+    private final Pose get2Pose = new Pose(17, 26, Math.toRadians(180));
+    private final Pose readyHang3Pose = new Pose(17, 68, Math.toRadians(180));
+    private final Pose hang3Pose = new Pose(40.8, 68, Math.toRadians(180));
     //    private final Pose readyget3Pose = new Pose(20, 72, Math.toRadians(310));
-    private final Pose get3Pose = new Pose(16, 19, Math.toRadians(180));
-    //    private final Pose readyHang3Pose = new Pose(20, 72, Math.toRadians(0));
-    private final Pose hang4Pose = new Pose(40, 81, Math.toRadians(0));
+    private final Pose get3Pose = new Pose(17, 26, Math.toRadians(180));
+    private final Pose readyHang4Pose = new Pose(17, 70, Math.toRadians(0));
+    private final Pose hang4Pose = new Pose(40.8, 70, Math.toRadians(180));
     //    private final Pose readyget3Pose = new Pose(20, 72, Math.toRadians(310));
-    private final Pose endPose = new Pose(14, 19, Math.toRadians(0));
+    private final Pose endPose = new Pose(14, 19, Math.toRadians(180));
 
 
     //   private Path ;
@@ -61,7 +61,7 @@ public class AutoRedBlue4 extends basic {
                 .build();
 
         leave1 = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(hang1Pose), new Point(leave1Control) ,new Point(leave1Pose)))
+                .addPath(new BezierCurve(new Point(hang1Pose), new Point(leave1Control), new Point(leave1Pose)))
                 .setLinearHeadingInterpolation(hang1Pose.getHeading(), leave1Pose.getHeading())
                 .build();
 
@@ -96,7 +96,7 @@ public class AutoRedBlue4 extends basic {
 //                .build();
 
         hang2 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(get1Pose), new Point(hang2Pose)))
+                .addPath(new BezierCurve(new Point(get1Pose), new Point(readyHang2Pose), new Point(hang2Pose)))
                 .setLinearHeadingInterpolation(get1Pose.getHeading(), hang2Pose.getHeading())
                 .build();
 
@@ -116,7 +116,7 @@ public class AutoRedBlue4 extends basic {
 //                .build();
 
         hang3 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(get2Pose), new Point(hang3Pose)))
+                .addPath(new BezierCurve(new Point(get2Pose), new Point(readyHang3Pose), new Point(hang3Pose)))
                 .setLinearHeadingInterpolation(get2Pose.getHeading(), hang3Pose.getHeading())
                 .build();
 
@@ -131,7 +131,7 @@ public class AutoRedBlue4 extends basic {
                 .build();
 
         hang4 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(get3Pose), new Point(hang4Pose)))
+                .addPath(new BezierCurve(new Point(get3Pose), new Point(readyHang4Pose), new Point(hang4Pose)))
                 .setLinearHeadingInterpolation(get3Pose.getHeading(), hang4Pose.getHeading())
                 .build();
 
@@ -157,7 +157,7 @@ public class AutoRedBlue4 extends basic {
             follower.followPath(hang1);
             setPathState(101);
         } else if (pathState == 101) {
-            if (follower.getPose().getX() > 38) setPathState(102);
+            if (follower.getPose().getX() > 36.5) setPathState(102);
         } else if (pathState == 102) {
             clawCombo(claw_bigger, 0);
             slideTarget = smin;
@@ -171,7 +171,6 @@ public class AutoRedBlue4 extends basic {
             if (pathTimer.getElapsedTimeSeconds() > 0.2) setPathState(202);
         } else if (pathState == 202) {
             if (!follower.isBusy()) {
-                //FollowerConstants.pathEndTimeoutConstraint = 500;
                 follower.followPath(readypush, true);
                 setPathState(2);
             }
@@ -187,7 +186,6 @@ public class AutoRedBlue4 extends basic {
         else if (pathState == 2) {
             if (!follower.isBusy()) {
                 follower.followPath(push1, true);
-                //FollowerConstants.pathEndTimeoutConstraint = 50;
                 setPathState(301);
             }
         } else if (pathState == 301) {
@@ -218,19 +216,23 @@ public class AutoRedBlue4 extends basic {
         //2
 
         else if (pathState == 7) {
-            clawCombo(claw_Close, intake_off);
+            clawCombo(claw_Close, intake_on);
             if (pathTimer.getElapsedTimeSeconds() >= clawCloseTime) setPathState(8);
         } else if (pathState == 8) {
             follower.followPath(hang2, true);
-            armTarget = arm_hang;
-            wristCombo(wrist_hang, 0);
+            armTarget = 30;
+            clawCombo(claw_Close, intake_off);
+            wristCombo(wristBackHang, 0);
             setPathState(9);
         } else if (pathState == 9) {
-            if (pathTimer.getElapsedTimeSeconds() >= 0.3) setPathState(10);
+            if (pathTimer.getElapsedTimeSeconds() >= 0.2) setPathState(10);
         } else if (pathState == 10) {
-            slideTarget = slide_hang;
-            if (follower.getPose().getX() > 39) setPathState(11);
+            slideTarget = slideBackHang;
+            armTarget = armBackHang;
+            wristCombo(wristBackHang, deltaBackHang);
+            if (follower.getPose().getX() > 40) setPathState(11);
         } else if (pathState == 11) {
+            wristCombo(wristBackHang - 0.1, deltaBackHang);
             clawCombo(claw_bigger, intake_off);
             slideTarget = slide_wall;
             if (pathTimer.getElapsedTimeSeconds() >= 0.1) setPathState(12);
@@ -240,7 +242,7 @@ public class AutoRedBlue4 extends basic {
                 setPathState(13);
             }
         } else if (pathState == 13) {
-            if (pathTimer.getElapsedTimeSeconds() > 0.6) setPathState(14);
+            if (pathTimer.getElapsedTimeSeconds() > 0.5) setPathState(14);
         } else if (pathState == 14) {
             armTarget = arm_wall;
             wristCombo(wrist_wall, 0);
@@ -251,19 +253,23 @@ public class AutoRedBlue4 extends basic {
         //3
 
         else if (pathState == 15) {
-            clawCombo(claw_Close, intake_off);
+            clawCombo(claw_Close, intake_on);
             if (pathTimer.getElapsedTimeSeconds() >= clawCloseTime) setPathState(16);
         } else if (pathState == 16) {
             follower.followPath(hang3, true);
-            armTarget = arm_hang;
-            wristCombo(wrist_hang, 0);
+            armTarget = 30;
+            clawCombo(claw_Close, intake_off);
+            wristCombo(wristBackHang, 0);
             setPathState(17);
         } else if (pathState == 17) {
-            if (pathTimer.getElapsedTimeSeconds() >= 0.3) setPathState(18);
+            if (pathTimer.getElapsedTimeSeconds() >= 0.2) setPathState(18);
         } else if (pathState == 18) {
-            slideTarget = slide_hang;
-            if (follower.getPose().getX() > 39) setPathState(19);
+            slideTarget = slideBackHang;
+            armTarget = armBackHang;
+            wristCombo(wristBackHang, deltaBackHang);
+            if (follower.getPose().getX() > 40) setPathState(19);
         } else if (pathState == 19) {
+            wristCombo(wristBackHang - 0.1, deltaBackHang);
             clawCombo(claw_bigger, intake_off);
             slideTarget = slide_wall;
             if (pathTimer.getElapsedTimeSeconds() >= 0.1) setPathState(20);
@@ -273,7 +279,7 @@ public class AutoRedBlue4 extends basic {
                 setPathState(21);
             }
         } else if (pathState == 21) {
-            if (pathTimer.getElapsedTimeSeconds() > 0.6) setPathState(22);
+            if (pathTimer.getElapsedTimeSeconds() > 0.5) setPathState(22);
         } else if (pathState == 22) {
             armTarget = arm_wall;
             wristCombo(wrist_wall, 0);
@@ -284,19 +290,23 @@ public class AutoRedBlue4 extends basic {
         // 4
 
         else if (pathState == 23) {
-            clawCombo(claw_Close, intake_off);
+            clawCombo(claw_Close, intake_on);
             if (pathTimer.getElapsedTimeSeconds() >= clawCloseTime) setPathState(24);
         } else if (pathState == 24) {
             follower.followPath(hang4, true);
-            armTarget = arm_hang;
-            wristCombo(wrist_hang, 0);
+            armTarget = 30;
+            clawCombo(claw_Close, intake_off);
+            wristCombo(wristBackHang, 0);
             setPathState(25);
         } else if (pathState == 25) {
-            if (pathTimer.getElapsedTimeSeconds() >= 0.3) setPathState(26);
+            if (pathTimer.getElapsedTimeSeconds() >= 0.2) setPathState(26);
         } else if (pathState == 26) {
-            slideTarget = slide_hang;
-            if (follower.getPose().getX() > 39) setPathState(27);
+            slideTarget = slideBackHang;
+            armTarget = armBackHang;
+            wristCombo(wristBackHang, deltaBackHang);
+            if (follower.getPose().getX() > 40) setPathState(27);
         } else if (pathState == 27) {
+            wristCombo(wristBackHang - 0.1, deltaBackHang);
             clawCombo(claw_bigger, intake_off);
             slideTarget = slide_wall;
             if (pathTimer.getElapsedTimeSeconds() >= 0.1) setPathState(28);
@@ -306,10 +316,11 @@ public class AutoRedBlue4 extends basic {
                 setPathState(29);
             }
         } else if (pathState == 29) {
-            if (pathTimer.getElapsedTimeSeconds() > 0.7) setPathState(30);
+            if (pathTimer.getElapsedTimeSeconds() > 0.5) setPathState(30);
         } else if (pathState == 30) {
-            armTarget = arm_wall;
+            armTarget = 52;
             wristCombo(wrist_wall, 0);
+            clawCombo(claw_bigger, intake_off);
             if (!follower.isBusy()) setPathState(-1);
         }
     }
@@ -336,11 +347,11 @@ public class AutoRedBlue4 extends basic {
 
         // Feedback to Driver Hub
 //        telemetry.addData("path state", pathState);
-//        telemetry.addData("x", follower.getPose().getX());
+        telemetry.addData("x", follower.getPose().getX());
 //        telemetry.addData("y", follower.getPose().getY());
 //        telemetry.addData("heading", follower.getPose().getHeading());
 //        telemetry.addData("pathEndTimeoutConstraint", FollowerConstants.pathEndTimeoutConstraint);
-//        telemetry.update();
+        telemetry.update();
     }
 
     /**
@@ -375,3 +386,4 @@ public class AutoRedBlue4 extends basic {
     public void robotStop() {
     }
 }
+

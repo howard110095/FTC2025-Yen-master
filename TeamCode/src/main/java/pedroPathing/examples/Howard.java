@@ -49,10 +49,13 @@ public class Howard extends basic {
         //button mode
         step_logic();
         yellow_logic();
-        //specimen_logic();
         hang_logic();
         hang_robot_logic();
-        intakeout_logic();
+        //intakeout_logic();
+        if (gamepad1.left_bumper) {
+            Left.setPower(-intake_on);
+            Right.setPower(-intake_on);
+        }
 
         //renew position
         if (gamepad2.left_stick_button) armOffset += gamepad2.left_stick_y * 0.3;
@@ -112,7 +115,6 @@ public class Howard extends basic {
         // reset
         if (gamepad1.a && !Button1A) {
             yellow_count = 1;
-            specimen_count = 1;
             hang_count = 0;
             hang_robot_count = 0;
             wrist_position = 0;
@@ -128,7 +130,7 @@ public class Howard extends basic {
         // last step
         if (gamepad1.x && !Button1X) {
             if (NowMode == 1) yellow_On(-1);
-           // else if (NowMode == 2) specimen_On(-1);
+                // else if (NowMode == 2) specimen_On(-1);
             else if (NowMode == 3) hang_On(-1);
         }
 
@@ -171,16 +173,9 @@ public class Howard extends basic {
                 catching = false;
             }
             clawCombo(claw_Close, intake_on);
-        }
-//        else if (yellow_count % yellow_step == 3) {
-//            clawCombo(claw_Close, intake_off);
-//            catching = false;
-//            downCatch = false;
-//        }
-        else if (yellow_count % yellow_step == 3) {
+        } else if (yellow_count % yellow_step == 3) {
             catching = false;
             downCatch = false;
-            // up
             slideTarget = slide_ready;
             armTarget = arm_ready;
             wristCombo(wrist_wall, 0);
@@ -194,54 +189,6 @@ public class Howard extends basic {
             catching = false;
         }
     }
-
-//    void specimen_logic() {
-//        if (gamepad1.left_bumper && !Button1LB) specimen_On(1);
-//        Button1LB = gamepad1.left_bumper;
-//    }
-//
-//    void specimen_On(int change) {
-//        NowMode = 2;
-//        specimen_count += change;
-//        if (specimen_count < 0) specimen_count += specimen_step;
-//
-//        if (yellow_count % specimen_step == 1) {
-//            slideTarget = slide_ready;
-//            armTarget = arm_ready;
-//            wrist_position = 0;
-//            wristCombo(wrist_ready, 0);
-//            clawCombo(claw_Close, intake_off);
-//            catching = true;
-//            downCatch = false;
-//        } else if (yellow_count % specimen_step == 2) {
-//            if (!downCatch) {
-//                armTarget = arm_catch;
-//                wristCombo(wrist_down, wrist_position);
-//                catching = false;
-//            }
-//            clawCombo(claw_Close, intake_on);
-//        } else if (yellow_count % specimen_step == 3) {
-//            clawCombo(claw_Close, intake_off);
-//            catching = false;
-//            downCatch = false;
-//        } else if (specimen_count % specimen_step == 4) {
-//            slideTarget = slide_wall;
-//            armTarget = arm_wall;
-//            wristCombo(wrist_wall, 0);
-//        } else if (specimen_count % specimen_step == 5) {
-//            clawCombo(claw_bigger, intake_on);
-//        } else if (specimen_count % specimen_step == 6) {
-//            clawCombo(claw_Close, intake_off);
-//        } else if (specimen_count % specimen_step == 7) {
-//            slideTarget = slide_hang;
-//            armTarget = arm_hang;
-//            wristCombo(wrist_hang, 0);
-//            clawCombo(claw_Close, intake_off);
-//        } else if (specimen_count % specimen_step == 0) {
-//            clawCombo(claw_bigger, intake_off);
-//            catching = false;
-//        }
-//    }
 
     void hang_logic() {
         if (gamepad1.y && !Button1Y) hang_On(1);
@@ -259,9 +206,9 @@ public class Howard extends basic {
             wristCombo(wrist_wall, 0);
             clawCombo(claw_bigger, intake_on);
             catching = false;
-        }  else if (hang_count % hang_step == 2) {
+        } else if (hang_count % hang_step == 2) {
             clawCombo(claw_Close, intake_off);
-        }else if (hang_count % hang_step == 3) {
+        } else if (hang_count % hang_step == 3) {
             armTarget = arm_hang;
             wristCombo(wrist_hang, 0);
             clawCombo(claw_Close, intake_off);

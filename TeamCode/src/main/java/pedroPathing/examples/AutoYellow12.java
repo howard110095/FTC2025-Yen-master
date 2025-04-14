@@ -16,8 +16,8 @@ import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 import pedroPathing.examples.basic;
 
-@Autonomous(name = "AutoYellowFast", group = "Examples")
-public class AutoYellowFast extends basic {
+@Autonomous(name = "AutoYellow12", group = "Examples")
+public class AutoYellow12 extends basic {
     private Timer pathTimer, actionTimer, opmodeTimer;
     private int pathState;
     private final Pose startPose = new Pose(9, 111, Math.toRadians(270));

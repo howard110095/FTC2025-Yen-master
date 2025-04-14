@@ -16,8 +16,8 @@ import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 import pedroPathing.examples.basic;
 
-@Autonomous(name = "AutoYellowFast", group = "Examples")
-public class AutoYellowFast extends basic {
+@Autonomous(name = "AutoYellow23", group = "Examples")
+public class AutoYellow23 extends basic {
     private Timer pathTimer, actionTimer, opmodeTimer;
     private int pathState;
     private final Pose startPose = new Pose(9, 111, Math.toRadians(270));
@@ -25,10 +25,10 @@ public class AutoYellowFast extends basic {
     private final Pose pickup1Pose = new Pose(35, 118, Math.toRadians(0));
     private final Pose pickup2Pose = new Pose(35, 128, Math.toRadians(0));
     private final Pose pickup3Pose = new Pose(39, 127, Math.toRadians(45));
-    private final Pose pickup4Control = new Pose(63, 120, Math.toRadians(270));
-    private final Pose pickup4Pose = new Pose(63, 92.5, Math.toRadians(270));
-    private final Pose pickup5Control = new Pose(67, 120, Math.toRadians(270));
-    private final Pose pickup5Pose = new Pose(67, 92.5, Math.toRadians(270));
+    private final Pose pickup4Control = new Pose(67, 120, Math.toRadians(270));
+    private final Pose pickup4Pose = new Pose(67, 92.5, Math.toRadians(270));
+    private final Pose pickup5Control = new Pose(71, 120, Math.toRadians(270));
+    private final Pose pickup5Pose = new Pose(71, 92.5, Math.toRadians(270));
     private final Pose parkControlPose = new Pose(63, 127, Math.toRadians(270));
     private final Pose parkPose = new Pose(63, 90, Math.toRadians(270));
 

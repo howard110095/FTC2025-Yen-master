@@ -25,34 +25,35 @@ public class AutoRedBlueFast extends basic {
     private int pathState;
 
     private final Pose startPose = new Pose(6.5, 64, Math.toRadians(0));
-    private final Pose hang1Control = new Pose(50, 62, Math.toRadians(0));
-    private final Pose hang1Pose = new Pose(37.5, 64, Math.toRadians(0));
+    private final Pose hang1Pose = new Pose(38, 64, Math.toRadians(0));
     private final Pose leave1Control = new Pose(24, 50, Math.toRadians(0));
     private final Pose leave1Pose = new Pose(40, 36, Math.toRadians(0));
-    private final Pose readypushControl = new Pose(60, 36, Math.toRadians(0));
-    private final Pose readypushPose = new Pose(60, 24, Math.toRadians(270));
-
+    private final Pose ready1Control = new Pose(60, 36, Math.toRadians(0));
+    private final Pose ready1Pose = new Pose(60, 24, Math.toRadians(270));
     // private final Pose push1Control = new Pose(90, 25, Math.toRadians(0));
     private final Pose push1stop = new Pose(17, 24, Math.toRadians(270));
     private final Pose ready2Control = new Pose(60, 29, Math.toRadians(270));
-    private final Pose ready2Pose = new Pose(60, 14, Math.toRadians(180));
-    private final Pose get1Pose = new Pose(17, 15, Math.toRadians(180));
-    //    private final Pose readyHang2Pose = new Pose(20, 68, Math.toRadians(0));
-    private final Pose hang2Pose = new Pose(40.7, 76, Math.toRadians(180));
-    //    private final Pose readyget2Pose = new Pose(20, 68, Math.toRadians(310));
-    private final Pose get2Pose = new Pose(17, 26 , Math.toRadians(180));
-    //    private final Pose readyHang3Pose = new Pose(20, 72, Math.toRadians(0));
-    private final Pose hang3Pose = new Pose(40.7, 76, Math.toRadians(180));
-    //    private final Pose readyget3Pose = new Pose(20, 72, Math.toRadians(310));
+    private final Pose ready2Pose = new Pose(60, 14, Math.toRadians(270));
+    private final Pose push2stop = new Pose(17, 14, Math.toRadians(270));
+    private final Pose ready3Control = new Pose(60, 14, Math.toRadians(270));
+    private final Pose ready3Pose = new Pose(60, 5.5, Math.toRadians(180));
+    private final Pose get1Pose = new Pose(17, 5.5, Math.toRadians(180));
+    private final Pose readyHang2Pose = new Pose(17, 68, Math.toRadians(180));
+    private final Pose hang2Pose = new Pose(40.8, 68, Math.toRadians(180));
+    private final Pose get2Pose = new Pose(17, 26, Math.toRadians(180));
+    private final Pose readyHang3Pose = new Pose(17, 69.5, Math.toRadians(180));
+    private final Pose hang3Pose = new Pose(40.8, 69.5, Math.toRadians(180));
     private final Pose get3Pose = new Pose(17, 26, Math.toRadians(180));
-    //    private final Pose readyHang3Pose = new Pose(20, 72, Math.toRadians(0));
-    private final Pose hang4Pose = new Pose(40.7, 76, Math.toRadians(180));
-    //    private final Pose readyget3Pose = new Pose(20, 72, Math.toRadians(310));
-    private final Pose endPose = new Pose(14, 19, Math.toRadians(180));
+    private final Pose readyHang4Pose = new Pose(17, 71, Math.toRadians(180));
+    private final Pose hang4Pose = new Pose(40.8, 71, Math.toRadians(180));
+    private final Pose get4Pose = new Pose(17, 26, Math.toRadians(180));
+    private final Pose readyHang5Pose = new Pose(17, 73.5, Math.toRadians(180));
+    private final Pose hang5Pose = new Pose(40.8, 73.5, Math.toRadians(180));
+    private final Pose endPose = new Pose(15, 15, Math.toRadians(225));
 
 
     //   private Path ;
-    private PathChain hang1, leave1, readypush, push1, ready2, get1, hang2, get2, hang3, get3, hang4, end;
+    private PathChain hang1, leave1, readypush, push1, ready2, push2, ready3, get1, hang2, get2, hang3, get3, hang4, get4, hang5, end;
 
     public void buildPaths() {
         hang1 = follower.pathBuilder()
@@ -66,13 +67,13 @@ public class AutoRedBlueFast extends basic {
                 .build();
 
         readypush = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(leave1Pose), new Point(readypushControl), new Point(readypushPose)))
-                .setLinearHeadingInterpolation(leave1Pose.getHeading(), readypushPose.getHeading())
+                .addPath(new BezierCurve(new Point(leave1Pose), new Point(ready1Control), new Point(ready1Pose)))
+                .setLinearHeadingInterpolation(leave1Pose.getHeading(), ready1Pose.getHeading())
                 .build();
 
         push1 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(readypushPose), new Point(push1stop)))
-                .setLinearHeadingInterpolation(readypushPose.getHeading(), push1stop.getHeading())
+                .addPath(new BezierLine(new Point(ready1Pose), new Point(push1stop)))
+                .setLinearHeadingInterpolation(ready1Pose.getHeading(), push1stop.getHeading())
                 .build();
 
         ready2 = follower.pathBuilder()
@@ -80,69 +81,59 @@ public class AutoRedBlueFast extends basic {
                 .setLinearHeadingInterpolation(push1stop.getHeading(), ready2Pose.getHeading())
                 .build();
 
-//        push2 = follower.pathBuilder()
-//                .addPath(new BezierCurve(new Point(ready2Pose), new Point(push2Control), new Point(push2stop)))
-//                .setLinearHeadingInterpolation(ready2Pose.getHeading(), push2stop.getHeading())
-//                .build();
-
-        get1 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(ready2Pose), new Point(get1Pose)))
-                .setLinearHeadingInterpolation(ready2Pose.getHeading(), get1Pose.getHeading())
+        push2 = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(ready2Pose), new Point(push2stop)))
+                .setLinearHeadingInterpolation(ready2Pose.getHeading(), push2stop.getHeading())
                 .build();
 
-//        readyHang2 = follower.pathBuilder()
-//                .addPath(new BezierLine(new Point(get1Pose), new Point(readyHang2Pose)))
-//                .setLinearHeadingInterpolation(get1Pose.getHeading(), readyHang2Pose.getHeading())
-//                .build();
+        ready3 = follower.pathBuilder()
+                .addPath(new BezierCurve(new Point(push2stop), new Point(ready3Control), new Point(ready3Pose)))
+                .setLinearHeadingInterpolation(push2stop.getHeading(), ready3Pose.getHeading())
+                .build();
+
+        get1 = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(ready3Pose), new Point(get1Pose)))
+                .setLinearHeadingInterpolation(ready3Pose.getHeading(), get1Pose.getHeading())
+                .build();
 
         hang2 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(get1Pose), new Point(hang2Pose)))
+                .addPath(new BezierCurve(new Point(get1Pose), new Point(readyHang2Pose), new Point(hang2Pose)))
                 .setLinearHeadingInterpolation(get1Pose.getHeading(), hang2Pose.getHeading())
                 .build();
 
-//        readyget2 = follower.pathBuilder()
-//                .addPath(new BezierLine(new Point(hang2Pose), new Point(readyget2Pose)))
-//                .setLinearHeadingInterpolation(hang2Pose.getHeading(), readyget2Pose.getHeading())
-//                .build();
-
         get2 = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(hang2Pose), new Point(get2Pose)))
+                .addPath(new BezierLine(new Point(hang2Pose), new Point(get2Pose)))
                 .setLinearHeadingInterpolation(hang2Pose.getHeading(), get2Pose.getHeading())
                 .build();
 
-//        readyHang3 = follower.pathBuilder()
-//                .addPath(new BezierLine(new Point(get2Pose), new Point(readyHang3Pose)))
-//                .setLinearHeadingInterpolation(get2Pose.getHeading(), readyHang3Pose.getHeading())
-//                .build();
-
         hang3 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(get2Pose), new Point(hang3Pose)))
+                .addPath(new BezierCurve(new Point(get2Pose), new Point(readyHang3Pose), new Point(hang3Pose)))
                 .setLinearHeadingInterpolation(get2Pose.getHeading(), hang3Pose.getHeading())
                 .build();
 
-//        readyget3 = follower.pathBuilder()
-//                .addPath(new BezierLine(new Point(hang3Pose), new Point(readyget3Pose)))
-//                .setLinearHeadingInterpolation(hang3Pose.getHeading(), readyget3Pose.getHeading())
-//                .build();
-
         get3 = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(hang3Pose), new Point(get3Pose)))
+                .addPath(new BezierLine(new Point(hang3Pose), new Point(get3Pose)))
                 .setLinearHeadingInterpolation(hang3Pose.getHeading(), get3Pose.getHeading())
                 .build();
 
         hang4 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(get3Pose), new Point(hang4Pose)))
+                .addPath(new BezierCurve(new Point(get3Pose), new Point(readyHang4Pose), new Point(hang4Pose)))
                 .setLinearHeadingInterpolation(get3Pose.getHeading(), hang4Pose.getHeading())
                 .build();
 
-//        readyget3 = follower.pathBuilder()
-//                .addPath(new BezierLine(new Point(hang3Pose), new Point(readyget3Pose)))
-//                .setLinearHeadingInterpolation(hang3Pose.getHeading(), readyget3Pose.getHeading())
-//                .build();
+        get4 = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(hang4Pose), new Point(get4Pose)))
+                .setLinearHeadingInterpolation(hang4Pose.getHeading(), get4Pose.getHeading())
+                .build();
+
+        hang5 = follower.pathBuilder()
+                .addPath(new BezierCurve(new Point(get4Pose), new Point(readyHang5Pose), new Point(hang5Pose)))
+                .setLinearHeadingInterpolation(get4Pose.getHeading(), hang5Pose.getHeading())
+                .build();
 
         end = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(hang4Pose), new Point(endPose)))
-                .setLinearHeadingInterpolation(hang4Pose.getHeading(), endPose.getHeading())
+                .addPath(new BezierCurve(new Point(hang5Pose), new Point(endPose)))
+                .setLinearHeadingInterpolation(hang5Pose.getHeading(), endPose.getHeading())
                 .build();
 
 
@@ -157,7 +148,7 @@ public class AutoRedBlueFast extends basic {
             follower.followPath(hang1);
             setPathState(101);
         } else if (pathState == 101) {
-            if (follower.getPose().getX() > 36.5) setPathState(102);
+            if (follower.getPose().getX() > 37) setPathState(102);
         } else if (pathState == 102) {
             clawCombo(claw_bigger, 0);
             slideTarget = smin;
@@ -168,22 +159,11 @@ public class AutoRedBlueFast extends basic {
                 setPathState(201);
             }
         } else if (pathState == 201) {
-            if (pathTimer.getElapsedTimeSeconds() > 0.2) setPathState(202);
-        } else if (pathState == 202) {
             if (!follower.isBusy()) {
                 follower.followPath(readypush, true);
                 setPathState(2);
             }
-        }
-        //
-//        else if (pathState == 201) {
-//            if (pathTimer.getElapsedTimeSeconds() >= 0.5) setPathState(202);
-//        } else if (pathState == 202) {
-//            //armTarget = 90;
-//            setPathState(2);
-//        }
-        //
-        else if (pathState == 2) {
+        } else if (pathState == 2) {
             if (!follower.isBusy()) {
                 follower.followPath(push1, true);
                 setPathState(301);
@@ -191,23 +171,28 @@ public class AutoRedBlueFast extends basic {
         } else if (pathState == 301) {
             if (!follower.isBusy()) {
                 follower.followPath(ready2, true);
+                setPathState(302);
+            }
+        } else if (pathState == 302) {
+            if (!follower.isBusy()) {
+                follower.followPath(push2, true);
+                setPathState(303);
+            }
+        } else if (pathState == 303) {
+            if (!follower.isBusy()) {
+                follower.followPath(ready3, true);
                 setPathState(3);
             }
         } else if (pathState == 3) {
             if (!follower.isBusy()) {
+                follower.followPath(get1, true);
                 slideTarget = slide_wall;
                 armTarget = arm_wall;
                 wristCombo(wrist_wall, 0);
-                clawCombo(claw_bigger, intake_off);
+                clawCombo(claw_bigger, intake_on);
                 setPathState(4);
             }
         } else if (pathState == 4) {
-            if (pathTimer.getElapsedTimeSeconds() > 0.35) setPathState(5);
-        } else if (pathState == 5) {
-            clawCombo(claw_bigger, intake_on);
-            follower.followPath(get1, true);
-            setPathState(6);
-        } else if (pathState == 6) {
             if (!follower.isBusy()) {
                 setPathState(7);
             }
@@ -216,13 +201,12 @@ public class AutoRedBlueFast extends basic {
         //2
 
         else if (pathState == 7) {
-            clawCombo(claw_Close, intake_on);
+            clawCombo(clawWallClose, intake_on);
             if (pathTimer.getElapsedTimeSeconds() >= clawCloseTime) setPathState(8);
         } else if (pathState == 8) {
             follower.followPath(hang2, true);
             armTarget = 30;
-            clawCombo(claw_Close, intake_off);
-            wristCombo(wristBackHang, 0);
+            clawCombo(clawWallClose, intake_off);
             setPathState(9);
         } else if (pathState == 9) {
             if (pathTimer.getElapsedTimeSeconds() >= 0.2) setPathState(10);
@@ -232,10 +216,11 @@ public class AutoRedBlueFast extends basic {
             wristCombo(wristBackHang, deltaBackHang);
             if (follower.getPose().getX() > 40) setPathState(11);
         } else if (pathState == 11) {
-            clawCombo(claw_bigger, intake_off);
-            slideTarget = slide_wall;
+            wristCombo(wristBackHang - 0.2, deltaBackHang);
             if (pathTimer.getElapsedTimeSeconds() >= 0.1) setPathState(12);
         } else if (pathState == 12) {
+            slideTarget = slide_wall;
+            clawCombo(claw_bigger, intake_off);
             if (!follower.isBusy()) {
                 follower.followPath(get2, true);
                 setPathState(13);
@@ -252,13 +237,12 @@ public class AutoRedBlueFast extends basic {
         //3
 
         else if (pathState == 15) {
-            clawCombo(claw_Close, intake_on);
+            clawCombo(clawWallClose, intake_on);
             if (pathTimer.getElapsedTimeSeconds() >= clawCloseTime) setPathState(16);
         } else if (pathState == 16) {
             follower.followPath(hang3, true);
             armTarget = 30;
-            clawCombo(claw_Close, intake_off);
-            wristCombo(wristBackHang, 0);
+            clawCombo(clawWallClose, intake_off);
             setPathState(17);
         } else if (pathState == 17) {
             if (pathTimer.getElapsedTimeSeconds() >= 0.2) setPathState(18);
@@ -268,10 +252,11 @@ public class AutoRedBlueFast extends basic {
             wristCombo(wristBackHang, deltaBackHang);
             if (follower.getPose().getX() > 40) setPathState(19);
         } else if (pathState == 19) {
-            clawCombo(claw_bigger, intake_off);
-            slideTarget = slide_wall;
+            wristCombo(wristBackHang - 0.2, deltaBackHang);
             if (pathTimer.getElapsedTimeSeconds() >= 0.1) setPathState(20);
         } else if (pathState == 20) {
+            clawCombo(claw_bigger, intake_off);
+            slideTarget = slide_wall;
             if (!follower.isBusy()) {
                 follower.followPath(get3, true);
                 setPathState(21);
@@ -288,13 +273,12 @@ public class AutoRedBlueFast extends basic {
         // 4
 
         else if (pathState == 23) {
-            clawCombo(claw_Close, intake_on);
+            clawCombo(clawWallClose, intake_on);
             if (pathTimer.getElapsedTimeSeconds() >= clawCloseTime) setPathState(24);
         } else if (pathState == 24) {
             follower.followPath(hang4, true);
             armTarget = 30;
-            clawCombo(claw_Close, intake_off);
-            wristCombo(wristBackHang, 0);
+            clawCombo(clawWallClose, intake_off);
             setPathState(25);
         } else if (pathState == 25) {
             if (pathTimer.getElapsedTimeSeconds() >= 0.2) setPathState(26);
@@ -304,21 +288,59 @@ public class AutoRedBlueFast extends basic {
             wristCombo(wristBackHang, deltaBackHang);
             if (follower.getPose().getX() > 40) setPathState(27);
         } else if (pathState == 27) {
-            clawCombo(claw_bigger, intake_off);
-            slideTarget = slide_wall;
+            wristCombo(wristBackHang - 0.2, deltaBackHang);
             if (pathTimer.getElapsedTimeSeconds() >= 0.1) setPathState(28);
         } else if (pathState == 28) {
+            clawCombo(claw_bigger, intake_off);
+            slideTarget = slide_wall;
             if (!follower.isBusy()) {
-                follower.followPath(end, true);
+                follower.followPath(get4, true);
                 setPathState(29);
             }
         } else if (pathState == 29) {
             if (pathTimer.getElapsedTimeSeconds() > 0.5) setPathState(30);
         } else if (pathState == 30) {
-            armTarget = 52;
+            armTarget = arm_wall;
+            wristCombo(wrist_wall, 0);
+            clawCombo(claw_bigger, intake_on);
+            if (!follower.isBusy()) setPathState(31);
+        }
+
+        // 5
+
+        else if (pathState == 31) {
+            clawCombo(clawWallClose, intake_on);
+            if (pathTimer.getElapsedTimeSeconds() >= clawCloseTime) setPathState(32);
+        } else if (pathState == 32) {
+            follower.followPath(hang5, true);
+            armTarget = 30;
+            clawCombo(clawWallClose, intake_off);
+            setPathState(33);
+        } else if (pathState == 33) {
+            if (pathTimer.getElapsedTimeSeconds() >= 0.2) setPathState(34);
+        } else if (pathState == 34) {
+            slideTarget = slideBackHang;
+            armTarget = armBackHang;
+            wristCombo(wristBackHang, deltaBackHang);
+            if (follower.getPose().getX() > 40) setPathState(35);
+        } else if (pathState == 35) {
+            wristCombo(wristBackHang - 0.2, deltaBackHang);
+            if (pathTimer.getElapsedTimeSeconds() >= 0.1) setPathState(36);
+        } else if (pathState == 36) {
+            clawCombo(claw_bigger, intake_off);
+            slideTarget = slide_wall;
+            if (!follower.isBusy()) {
+                follower.followPath(end, true);
+                setPathState(37);
+            }
+        } else if (pathState == 37) {
+            if (pathTimer.getElapsedTimeSeconds() > 0.5) setPathState(38);
+        } else if (pathState == 38) {
+            slideTarget = 40;
+            armTarget = 0;
             wristCombo(wrist_wall, 0);
             clawCombo(claw_bigger, intake_off);
-            if (!follower.isBusy()) setPathState(-2);
+            if (!follower.isBusy()) setPathState(-1);
         }
     }
 
@@ -344,9 +366,9 @@ public class AutoRedBlueFast extends basic {
 
         // Feedback to Driver Hub
 //        telemetry.addData("path state", pathState);
-        telemetry.addData("x", follower.getPose().getX());
+//        telemetry.addData("x", follower.getPose().getX());
 //        telemetry.addData("y", follower.getPose().getY());
-//        telemetry.addData("heading", follower.getPose().getHeading());
+        telemetry.addData("heading", follower.getPose().getHeading());
 //        telemetry.addData("pathEndTimeoutConstraint", FollowerConstants.pathEndTimeoutConstraint);
         telemetry.update();
     }
