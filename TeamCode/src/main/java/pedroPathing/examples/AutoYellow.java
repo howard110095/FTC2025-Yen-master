@@ -16,19 +16,19 @@ import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 import pedroPathing.examples.basic;
 
-@Autonomous(name = "AutoYellow23", group = "Examples")
-public class AutoYellow23 extends basic {
+@Autonomous(name = "AutoYellow", group = "Examples")
+public class AutoYellow extends basic {
     private Timer pathTimer, actionTimer, opmodeTimer;
     private int pathState;
     private final Pose startPose = new Pose(9, 111, Math.toRadians(270));
-    private final Pose scorePose = new Pose(15.3, 128.5, Math.toRadians(315));
-    private final Pose pickup1Pose = new Pose(35, 118, Math.toRadians(0));
-    private final Pose pickup2Pose = new Pose(35, 128, Math.toRadians(0));
-    private final Pose pickup3Pose = new Pose(39, 127, Math.toRadians(45));
-    private final Pose pickup4Control = new Pose(67, 120, Math.toRadians(270));
-    private final Pose pickup4Pose = new Pose(67, 92.5, Math.toRadians(270));
-    private final Pose pickup5Control = new Pose(71, 120, Math.toRadians(270));
-    private final Pose pickup5Pose = new Pose(71, 92.5, Math.toRadians(270));
+    private final Pose scorePose = new Pose(14.6, 129.4, Math.toRadians(315));
+    private final Pose pickup1Pose = new Pose(34, 118, Math.toRadians(0));
+    private final Pose pickup2Pose = new Pose(34, 128, Math.toRadians(0));
+    private final Pose pickup3Pose = new Pose(38, 126.2, Math.toRadians(45));
+    private final Pose pickup4Control = new Pose(63, 120, Math.toRadians(270));
+    private final Pose pickup4Pose = new Pose(63, 89.5, Math.toRadians(270));
+    private final Pose pickup5Control = new Pose(67, 120, Math.toRadians(270));
+    private final Pose pickup5Pose = new Pose(67, 89.5, Math.toRadians(270));
     private final Pose parkControlPose = new Pose(63, 127, Math.toRadians(270));
     private final Pose parkPose = new Pose(63, 90, Math.toRadians(270));
 
@@ -103,9 +103,9 @@ public class AutoYellow23 extends basic {
     public void autonomousPathUpdate() {
         // 1
         if (pathState == 0) {
-            slideTarget = slide_bucket;
-            armTarget = arm_bucket;
-            wristCombo(wrist_bucket, 0);
+            slideTarget = slide_basket;
+            armTarget = arm_basket;
+            wristCombo(wrist_basket, 0);
             setPathState(101);
         } else if (pathState == 101) {
             if (pathTimer.getElapsedTimeSeconds() >= 0.2) setPathState(102);
@@ -141,9 +141,9 @@ public class AutoYellow23 extends basic {
             clawCombo(claw_Close, intake_on);
             if (pathTimer.getElapsedTimeSeconds() >= clawCloseTime) setPathState(2);
         } else if (pathState == 2) {
-            slideTarget = slide_bucket;
-            armTarget = arm_bucket;
-            wristCombo(wrist_bucket, 0);
+            slideTarget = slide_basket;
+            armTarget = arm_basket;
+            wristCombo(wrist_basket, 0);
             clawCombo(claw_Close, intake_off);
             if (!follower.isBusy()) {
                 follower.followPath(score2, true);
@@ -178,9 +178,9 @@ public class AutoYellow23 extends basic {
             clawCombo(claw_Close, intake_on);
             if (pathTimer.getElapsedTimeSeconds() >= clawCloseTime) setPathState(4);
         } else if (pathState == 4) {
-            slideTarget = slide_bucket;
-            armTarget = arm_bucket;
-            wristCombo(wrist_bucket, 0);
+            slideTarget = slide_basket;
+            armTarget = arm_basket;
+            wristCombo(wrist_basket, 0);
             clawCombo(claw_Close, intake_off);
             if (!follower.isBusy()) {
                 follower.followPath(score3, true);
@@ -217,9 +217,9 @@ public class AutoYellow23 extends basic {
             clawCombo(claw_Close, intake_on);
             if (pathTimer.getElapsedTimeSeconds() >= clawCloseTime) setPathState(6);
         } else if (pathState == 6) {
-            slideTarget = slide_bucket;
-            armTarget = arm_bucket;
-            wristCombo(wrist_bucket, 0);
+            slideTarget = slide_basket;
+            armTarget = arm_basket;
+            wristCombo(wrist_basket, 0);
             clawCombo(claw_Close, intake_off);
             if (!follower.isBusy()) {
                 follower.followPath(score4, true);
@@ -240,7 +240,7 @@ public class AutoYellow23 extends basic {
             if (!follower.isBusy()) {
                 slideTarget = 35;
                 armTarget = -10;
-                wristCombo(wrist_down, 0);
+                wristCombo(wrist_ground, 0);
                 clawCombo(claw_Close, intake_off);
                 follower.followPath(grab4, true);
                 setPathState(801);
@@ -248,19 +248,19 @@ public class AutoYellow23 extends basic {
         } else if (pathState == 801) {
             if (pathTimer.getElapsedTimeSeconds() > 0.3) setPathState(802);
         } else if (pathState == 802) {
-            wristCombo(wrist_wall, 0);
+            wristCombo(wrist_ground, 0);
             clawCombo(claw_Close, intake_on);
             setPathState(803);
         } else if (pathState == 803) {
             if (!follower.isBusy()) {
-                slideTarget = 60;
-                armTarget = -24;
+                slideTarget = 65;
+                armTarget = -22;
                 setPathState(804);
             }
         } else if (pathState == 804) {
-            if (slidePosNow >= 57) setPathState(805);
+            if (slidePosNow >= 63) setPathState(805);
         } else if (pathState == 805) {
-            if (pathTimer.getElapsedTimeSeconds() > 0.3) setPathState(806);
+            if (pathTimer.getElapsedTimeSeconds() > 0.4) setPathState(806);
         } else if (pathState == 806) {
             slideTarget = smin;
             if (OutColor == color_detect()) clawCombo(claw_Close, -intake_on);
@@ -275,9 +275,9 @@ public class AutoYellow23 extends basic {
         } else if (pathState == 901) {
             if (pathTimer.getElapsedTimeSeconds() >= 0.5) setPathState(902);
         } else if (pathState == 902) {
-            slideTarget = slide_bucket;
-            armTarget = arm_bucket;
-            wristCombo(wrist_bucket, 0);
+            slideTarget = slide_basket;
+            armTarget = arm_basket;
+            wristCombo(wrist_basket, 0);
             clawCombo(claw_Close, intake_off);
             setPathState(903);
         } else if (pathState == 903) {
@@ -295,7 +295,7 @@ public class AutoYellow23 extends basic {
             if (!follower.isBusy()) {
                 slideTarget = 35;
                 armTarget = -10;
-                wristCombo(wrist_down, 0);
+                wristCombo(wrist_ground, 0);
                 clawCombo(claw_Close, intake_off);
                 follower.followPath(grab5, true);
                 setPathState(1001);
@@ -303,19 +303,19 @@ public class AutoYellow23 extends basic {
         } else if (pathState == 1001) {
             if (pathTimer.getElapsedTimeSeconds() > 0.3) setPathState(1002);
         } else if (pathState == 1002) {
-            wristCombo(wrist_wall, 0);
+            wristCombo(wrist_ground, 0);
             clawCombo(claw_Close, intake_on);
             setPathState(1003);
         } else if (pathState == 1003) {
             if (!follower.isBusy()) {
-                slideTarget = 60;
-                armTarget = -24;
+                slideTarget = 65;
+                armTarget = -22;
                 setPathState(1004);
             }
         } else if (pathState == 1004) {
-            if (slidePosNow >= 57) setPathState(1005);
+            if (slidePosNow >= 63) setPathState(1005);
         } else if (pathState == 1005) {
-            if (pathTimer.getElapsedTimeSeconds() > 0.3) setPathState(1006);
+            if (pathTimer.getElapsedTimeSeconds() > 0.4) setPathState(1006);
         } else if (pathState == 1006) {
             slideTarget = smin;
             if (OutColor == color_detect()) clawCombo(claw_Close, -intake_on);
@@ -330,9 +330,9 @@ public class AutoYellow23 extends basic {
         } else if (pathState == 1101) {
             if (pathTimer.getElapsedTimeSeconds() >= 0.5) setPathState(1102);
         } else if (pathState == 1102) {
-            slideTarget = slide_bucket;
-            armTarget = arm_bucket;
-            wristCombo(wrist_bucket, 0);
+            slideTarget = slide_basket;
+            armTarget = arm_basket;
+            wristCombo(wrist_basket, 0);
             clawCombo(claw_Close, intake_off);
             setPathState(1103);
         } else if (pathState == 1103) {

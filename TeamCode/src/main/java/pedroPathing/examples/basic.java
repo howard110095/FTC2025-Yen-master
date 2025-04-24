@@ -55,26 +55,25 @@ public abstract class basic extends OpMode {
     public static double armOffset = -42; // 起始角度   偏移量
 
     //---------------- slide -------------
-    public static double slideP = 0.8, slideI = 0, slideD = 0.018, slideF = 0; // 吊掛滑軌前饋
+    public static double slideP = 0.4, slideI = 0, slideD = 0.01, slideF = 0; // 吊掛滑軌前饋
     public static double slideOffset = 0; // 滑軌前饋係數
     public static double slide_motorEnc = 145.1; // 滑軌馬達編碼器常數
     public static double slide_Ratio = 1 / 1.5; // 傳動比
     public static double slide2length = slide_motorEnc * slide_Ratio / 0.8; // 編碼器值轉長度
     public double slidePower;
-    public static double smax = 84.5, smin = 28; // slide length limit
+    public static double smax = 84.8, smin = 28; // slide length limit
     public static double slidePosNow = 0; //slide current CM
     public double slideTarget = 0; //slide Target CM
 
     //-----------------position-----------------
-    public static double clawCloseTime = 0.2, putBucketTime = 0.3, claw_bigger = 0.52, claw_Close = 0.63,clawWallClose = 0.68, intake_on = 1, intake_off = 0;
-    public static double wrist_pos = 0, wrist_all_pose = 0.75, wrist_delta = 0.06, wrist_position = 0;
-    public static double wrist_init = 0, delta_init = 0.2, wrist_ready = 0.64, wrist_down = 0.6, wrist_bucket = 0.2, wrist_wall = 0.3, wrist_hang = 0.23;
-    public static double arm_init = -42, arm_robot = 70, arm_ready = 0, arm_catch = -24, arm_bucket = 88, arm_wall = 0, arm_hang = 38;
-    public static double slide_ready = 33, slide_bucket = 83.5, slide_wall = 30, slide_hang = 45;
-    public static double slide_robot = 81, slide2floor = 49, slide2floor_down = 55, slide3floor = 28;
-    public static double slideBackHang = 34, armBackHang = 117, wristBackHang = 0.4, deltaBackHang = 0.2;
+    public static double clawCloseTime = 0.2, putBucketTime = 0.45, claw_bigger = 0.52, claw_Close = 0.63, clawWallClose = 0.68, intake_on = 1, intake_off = 0;
+    public static double wrist_pos = 0, wrist_all_pose = 0.8 /*0.75*/, wrist_delta = 0.06, wrist_position = 0;
+    public static double wrist_init = 0, delta_init = 0.16, wrist_ready = 0.68/*0.64*/, wrist_down = 0.64/*0.6*/, wrist_basket = 0.27/*0.25*/, wrist_wall = 0.33/*0.3*/, wrist_hang = 0.27/*0.23*/, wrist_ground = 0.38/*0.4*/;
+    public static double arm_init = -48, arm_robot = 70, arm_ready = 0, arm_catch = -24, arm_basket = 88, arm_wall = 3, arm_hang = 36;
+    public static double slide_ready = 33, slide_basket = 83.5, slide_wall = 30, slide_hang = 45;
+    public static double slide_robot = 81, slide2floor = 50.5, slide2floor_down = 58, slide3floor = 28;
+    public static double slideBackHang = 32, armBackHang = 117, wristBackHang = 0.44, deltaBackHang = 0.2;
     public boolean isHangingMode = false; //hang mode
-
     //---------teleOp---------------
     public boolean Button1A = false, Button1B = false, Button1X = false, Button1Y = false;
     public boolean Button1LB = false, Button1RB = false, Button1DL = false, Button1DR = false;
@@ -236,12 +235,12 @@ public abstract class basic extends OpMode {
     public void autoFloor() {
         //255 -> 355
         slidePosNow = (SlideBack.getCurrentPosition() / slide2length) * 2 + smin + slideOffset;
-        armTarget = -Math.toDegrees(Math.asin(15 / slidePosNow));
-        wrist_pos = -Math.toDegrees(Math.asin(15 / slidePosNow)) / 250 / 355 * 255;
-        wrist_pos += 0.35;
+        armTarget = -Math.toDegrees(Math.asin(16 / slidePosNow));
+        wrist_pos = -Math.toDegrees(Math.asin(16 / slidePosNow)) / 250 / 355 * 255;
+        wrist_pos += 0.38;
         wristCombo(wrist_pos, 0);
-        if(gamepad1.left_bumper) clawCombo(claw_Close, -intake_on);
-        else  clawCombo(claw_Close, intake_on);
+        if (gamepad1.left_bumper) clawCombo(claw_Close, -intake_on);
+        else clawCombo(claw_Close, intake_on);
     }
 
     // 計算角度誤差

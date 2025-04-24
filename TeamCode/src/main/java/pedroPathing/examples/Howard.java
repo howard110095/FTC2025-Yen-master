@@ -59,8 +59,10 @@ public class Howard extends basic {
 
         //renew position
         if (gamepad2.left_stick_button) armOffset += gamepad2.left_stick_y * 0.3;
+//        armPosNow = ArmUp.getCurrentPosition() / armEnc2deg + armOffset; // 計算當前角度
+//        armTarget = armPosNow - gamepad2.left_stick_y*0.3;
         if (gamepad2.right_stick_button) slideOffset += gamepad2.right_stick_y * 0.3;
-        if (gamepad1.right_stick_button) slideTarget = 38;
+        if (gamepad1.right_stick_button) slideTarget = 40;
 
         //catching wrist turn
         if (catching && !downCatch) {
@@ -130,7 +132,7 @@ public class Howard extends basic {
         // last step
         if (gamepad1.x && !Button1X) {
             if (NowMode == 1) yellow_On(-1);
-                // else if (NowMode == 2) specimen_On(-1);
+            else if (NowMode == 2) hang_robot_On(7, -1);
             else if (NowMode == 3) hang_On(-1);
         }
 
@@ -181,9 +183,9 @@ public class Howard extends basic {
             wristCombo(wrist_wall, 0);
             clawCombo(claw_Close, intake_off);
         } else if (yellow_count % yellow_step == 4) {
-            slideTarget = slide_bucket;
-            armTarget = arm_bucket;
-            wristCombo(wrist_bucket, 0);
+            slideTarget = slide_basket;
+            armTarget = arm_basket;
+            wristCombo(wrist_basket, 0);
         } else if (yellow_count % yellow_step == 0) {
             clawCombo(claw_Close, -intake_on * 0.5);
             catching = false;
@@ -226,6 +228,7 @@ public class Howard extends basic {
     }
 
     void hang_robot_On(int all, int change) {
+        NowMode = 2;
         hang_robot_count += change;
         if (hang_robot_count < 0) hang_robot_count += all;
 
@@ -238,15 +241,20 @@ public class Howard extends basic {
             catching = false;
             isHangingMode = true;
         } else if (hang_robot_count % all == 2) {
-            slideTarget = slide2floor;
+            slideTarget = 49.5;
+            armTarget = 65;
         } else if (hang_robot_count % all == 3) {
             slideTarget = slide2floor_down;
+            armTarget = 65;
         } else if (hang_robot_count % all == 4) {
             slideTarget = slide3floor;
-            armTarget = 97;
+            armTarget = 80;
         } else if (hang_robot_count % all == 5) {
+            slideTarget = slide3floor;
+            armTarget = 110;
+        } else if (hang_robot_count % all == 6) {
             laststep = true;
-            armTarget = -32.5;
+            armTarget = -46;
         }
     }
 

@@ -36,17 +36,17 @@ public class AutoRedBlue5 extends basic {
     private final Pose ready2Pose = new Pose(60, 14, Math.toRadians(270));
     private final Pose push2stop = new Pose(17, 14, Math.toRadians(270));
     private final Pose ready3Control = new Pose(60, 14, Math.toRadians(270));
-    private final Pose ready3Pose = new Pose(60, 5.5, Math.toRadians(180));
-    private final Pose get1Pose = new Pose(17, 5.5, Math.toRadians(180));
+    private final Pose ready3Pose = new Pose(60, 7.2, Math.toRadians(180));
+    private final Pose get1Pose = new Pose(17.2, 7.2, Math.toRadians(180));
     private final Pose readyHang2Pose = new Pose(17, 68, Math.toRadians(180));
     private final Pose hang2Pose = new Pose(40.8, 68, Math.toRadians(180));
-    private final Pose get2Pose = new Pose(17, 26, Math.toRadians(180));
+    private final Pose get2Pose = new Pose(17.2, 26, Math.toRadians(180));
     private final Pose readyHang3Pose = new Pose(17, 69.5, Math.toRadians(180));
     private final Pose hang3Pose = new Pose(40.8, 69.5, Math.toRadians(180));
-    private final Pose get3Pose = new Pose(17, 26, Math.toRadians(180));
+    private final Pose get3Pose = new Pose(17.2, 26, Math.toRadians(180));
     private final Pose readyHang4Pose = new Pose(17, 71, Math.toRadians(180));
     private final Pose hang4Pose = new Pose(40.8, 71, Math.toRadians(180));
-    private final Pose get4Pose = new Pose(17, 26, Math.toRadians(180));
+    private final Pose get4Pose = new Pose(17.2, 26, Math.toRadians(180));
     private final Pose readyHang5Pose = new Pose(17, 73.5, Math.toRadians(180));
     private final Pose hang5Pose = new Pose(40.8, 73.5, Math.toRadians(180));
     private final Pose endPose = new Pose(15, 15, Math.toRadians(225));
@@ -148,7 +148,7 @@ public class AutoRedBlue5 extends basic {
             follower.followPath(hang1);
             setPathState(101);
         } else if (pathState == 101) {
-            if (follower.getPose().getX() > 37) setPathState(102);
+            if (follower.getPose().getX() > 36.8) setPathState(102);
         } else if (pathState == 102) {
             clawCombo(claw_bigger, 0);
             slideTarget = smin;
